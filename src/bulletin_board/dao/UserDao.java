@@ -48,7 +48,7 @@ public class UserDao {
 		try {
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String login_id = rs.getString("login_id");
+				String loginId = rs.getString("login_id");
 				String password = rs.getString("password");
 				String name = rs.getString("name");
 				int branchId = rs.getInt("branch_id");
@@ -56,7 +56,7 @@ public class UserDao {
 
 				User user = new User();
 				user.setId(id);
-				user.setLoginId(login_id);
+				user.setLoginId(loginId);
 				user.setPassword(password);
 				user.setName(name);
 				user.setBranchId(branchId);
@@ -164,4 +164,65 @@ public class UserDao {
 			close(ps);
 		}
 	}
+
+
+	public List<User> getUsers(Connection connection, String branchName,String departmentName) {
+		PreparedStatement ps = null;
+		try {
+			String sql = "select users.*,branches.name as branch_name ,"
+					+ "departments.name as department_name "
+					+ "from(users join branches , departments)  "
+					+ "where users.branch_id = branches.id and users.department_id = departments.id;";
+
+			ps = connection.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+			List<User> usersList = toUsersList(rs);
+			if (usersList.isEmpty() == true) {
+				return null;
+			} else {
+				return usersList;
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	private List<User> toUsersList(ResultSet rs) throws SQLException {
+
+		List<User> ret = new ArrayList<User>();
+		try {
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String loginId = rs.getString("login_id");
+				String password = rs.getString("password");
+				String name = rs.getString("name");
+				int branchId = rs.getInt("branch_id");
+				int departmentId = rs.getInt("department_id");
+
+				String departmentName = rs.getString("department_name");
+				String branchName = rs.getString("branch_name");
+
+				User user = new User();
+				user.setId(id);
+				user.setLoginId(loginId);
+				user.setPassword(password);
+				user.setName(name);
+				user.setBranchId(branchId);
+				user.setDepartmentId(departmentId);
+
+				user.setBranchName(branchName);
+				user.setDepartmentName(departmentName);
+
+				ret.add(user);
+			}
+			return ret;
+		} finally {
+			close(rs);
+		}
+	}
 }
+
+

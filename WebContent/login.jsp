@@ -11,7 +11,6 @@
 </head>
 <body>
 <div class="main-contents">
-
 <c:if test="${ not empty errorMessages }">
 	<div class="errorMessages">
 		<ul>
@@ -31,7 +30,6 @@
 	<input name="password" type="password" id="password"/> <br />
 
 	<input type="submit" value="ログイン" /> <br />
-	<a href="./">戻る</a>
 </form>
 <div class="copyright">Copyright(c)Atsushi Ikeuchi</div>
 </div>

@@ -11,6 +11,9 @@ public class User implements Serializable {
 	private String name;
 	private int branchId;
 	private int departmentId;
+	private int isWorking;
+	private String branchName;
+	private String departmentName;
 	/**
 	 * idを取得します。
 	 * @return id
@@ -95,7 +98,46 @@ public class User implements Serializable {
 	public void setDepartmentId(int departmentId) {
 	    this.departmentId = departmentId;
 	}
-
-
-
+	/**
+	 * is_workingを取得します。
+	 * @return isWorking
+	 */
+	public int getIsWorking() {
+	    return isWorking;
+	}
+	/**
+	 * is_workingを設定します。
+	 * @param isWorking isWorking
+	 */
+	public void setIsWorking(int isWorking) {
+	    this.isWorking = isWorking;
+	}
+	/**
+	 * branchNameを取得します。
+	 * @return branchName
+	 */
+	public String getBranchName() {
+	    return branchName;
+	}
+	/**
+	 * branchNameを設定します。
+	 * @param branchName branchName
+	 */
+	public void setBranchName(String branchName) {
+	    this.branchName = branchName;
+	}
+	/**
+	 * departmentNameを取得します。
+	 * @return departmentName
+	 */
+	public String getDepartmentName() {
+	    return departmentName;
+	}
+	/**
+	 * departmentNameを設定します。
+	 * @param departmentName departmentName
+	 */
+	public void setDepartmentName(String departmentName) {
+	    this.departmentName = departmentName;
+	}
 }

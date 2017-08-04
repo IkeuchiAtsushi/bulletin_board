@@ -6,27 +6,26 @@
 //import java.sql.PreparedStatement;
 //import java.sql.ResultSet;
 //import java.sql.SQLException;
-//import java.sql.Timestamp;
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//import bulletin_board.beans.UserMessage;
+//import bulletin_board.beans.UserPosts;
 //import bulletin_board.exception.SQLRuntimeException;
 //
 //public class UserPostsDao {
 //
-//	public List<UserMessage> getUserMessages(Connection connection, int num) {
+//	public List<UserPosts> getUserPosts(Connection connection, int num) {
 //
 //		PreparedStatement ps = null;
 //		try {
 //			StringBuilder sql = new StringBuilder();
-//			sql.append("SELECT * FROM user_message ");
+//			sql.append("SELECT * FROM users ");
 //			sql.append("ORDER BY insert_date DESC limit " + num);
 //
 //			ps = connection.prepareStatement(sql.toString());
 //
 //			ResultSet rs = ps.executeQuery();
-//			List<UserMessage> ret = toUserMessageList(rs);
+//			List<UserPosts> ret = toUserPostsList(rs);
 //			return ret;
 //		} catch (SQLException e) {
 //			throw new SQLRuntimeException(e);
@@ -35,28 +34,28 @@
 //		}
 //	}
 //
-//	private List<UserMessage> toUserMessageList(ResultSet rs)
+//	private List<UserPosts> toUserPostsList(ResultSet rs)
 //			throws SQLException {
 //
-//		List<UserMessage> ret = new ArrayList<UserMessage>();
+//		List<UserPosts> ret = new ArrayList<UserPosts>();
 //		try {
 //			while (rs.next()) {
-//				String account = rs.getString("account");
-//				String name = rs.getString("name");
-//				int id = rs.getInt("id");
-//				int userId = rs.getInt("user_id");
+//				String subject = rs.getString("subject");
 //				String text = rs.getString("text");
-//				Timestamp insertDate = rs.getTimestamp("insert_date");
+//				String category = rs.getString("category");
+//				int branchId = rs.getInt("branchId");
+//				int departmentId = rs.getInt("departmentId");
+//				int userId = rs.getInt("userId");
 //
-//				UserMessage message = new UserMessage();
-//				message.setAccount(account);
-//				message.setName(name);
-//				message.setId(id);
-//				message.setUserId(userId);
-//				message.setText(text);
-//				message.setInsertDate(insertDate);
+//				UserPosts post = new UserPosts();
+//				post.setSubject(subject);
+//				post.setText(text);
+//				post.setCategory(category);
+//				post.setBranchId(branchId);
+//				post.setDepartmentId(departmentId);
+//				post.setUserId(userId);
 //
-//				ret.add(message);
+//				ret.add(post);
 //			}
 //			return ret;
 //		} finally {

@@ -24,8 +24,6 @@
 </c:if>
 
 <form action="settings" method="post" enctype="multipart/form-data"><br />
-	<label for="name">名前</label>
-	<input name="name" value="${editUser.name}" id="name"/><br />
 
 	<label for="login_id">ログインID</label>
 	<input name="login_id" value="${editUser.login_id}" /><br />
