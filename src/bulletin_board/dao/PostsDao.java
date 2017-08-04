@@ -20,10 +20,10 @@ public class PostsDao {
 			sql.append("subject");
 			sql.append(", text");
 			sql.append(", category");
-			sql.append(", branchId");
-			sql.append(", departmentId");
-			sql.append(", createdAt");
-			sql.append(", userId");
+			sql.append(", branch_id");
+			sql.append(", department_id");
+			sql.append(", created_at");
+			sql.append(", user_id");
 			sql.append(") VALUES (");
 			sql.append("?"); // subject
 			sql.append(", ?"); // text

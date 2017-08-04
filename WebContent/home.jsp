@@ -17,7 +17,7 @@
 			<c:if test="${not empty loginUser }">
 				<a href="./">ホーム</a>
 				<a href="settings">設定</a>
-				<a href="newPosts">新規投稿</a>
+				<a href="posts">新規投稿</a>
 				<a href="logout">ログアウト</a>
 				<a href="userManagement">ユーザー管理</a>
 			</c:if>
@@ -26,32 +26,32 @@
 		<c:if test="${not empty loginUser}">
 			<div class="profile">
 				<div class="name">
-					<h2>
-						<c:out value="${loginUser.name}" />
-					</h2>
-				</div>
-				<div class="login_id">
-					@
-					<c:out value="${loginUser.loginId}" />
+					<h1>
+						<c:out value="ようこそ${loginUser.name}さん！" /><br/>
+					</h1>
 				</div>
 			</div>
 		</c:if>
+<h3>みんなの投稿</h3>
 
-		<%--
 <div class="messages">
-	<c:forEach items="${messages}" var="message">
+	<c:forEach items="${Posts}" var="post">
 		<div class="message">
 			<div class="account-name">
-				<span class="account"><c:out value="${message.login_id }"/>
-				</span>
-				<span class="name"><c:out value="${message.name }"/>
-				</span>
+				<span class="name"><c:out value="${post.name }"/></span>さんの投稿<br/>
+				件名：<span class="subject"><c:out value="${post.subject }"/></span><br/>
+				カテゴリー：<span class="category"><c:out value="${post.category }"/></span><br/>
 			</div>
-			<div class="text"><c:out value="${message.text }"/></div>
+			投稿文：<div class="text"><c:out value="${post.text }"/></div><br/>
+			<div class="date"><fmt:formatDate value="${post.createdAt }"
+			pattern="yyyy/MM/dd HH:mm:ss"/><br/>
+				所属：<span class="branchId"><c:out value="${post.branchName }"/></span> /
+				部署・役職：<span class="departmentId"><c:out value="${post.departmentName }"/></span><br/>
+			<br/>
+			</div>
 		</div>
 	</c:forEach>
 </div>
---%>
 		<div class="copyright">Copyright(c)Atsushi Ikeuchi></div>
 	</div>
 </body>

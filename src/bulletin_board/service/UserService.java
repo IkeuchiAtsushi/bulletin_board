@@ -82,14 +82,14 @@ public class UserService {
 		}
 	}
 
-	public List<User>getUsers (String branchName,String departmentName){
+	public List<User>getUsers(){
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
 			UserDao userDao = new UserDao();
-			List<User> ret = userDao.getUsers(connection,branchName,departmentName);
+			List<User> ret = userDao.getUsers(connection);
 
 			commit(connection);
 

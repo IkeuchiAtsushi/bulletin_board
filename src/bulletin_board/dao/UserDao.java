@@ -166,7 +166,7 @@ public class UserDao {
 	}
 
 
-	public List<User> getUsers(Connection connection, String branchName,String departmentName) {
+	public List<User> getUsers(Connection connection) {
 		PreparedStatement ps = null;
 		try {
 			String sql = "select users.*,branches.name as branch_name ,"
