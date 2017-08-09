@@ -14,6 +14,7 @@ public class User implements Serializable {
 	private int isWorking;
 	private String branchName;
 	private String departmentName;
+
 	/**
 	 * idを取得します。
 	 * @return id

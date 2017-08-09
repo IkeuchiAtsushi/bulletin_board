@@ -14,7 +14,7 @@ import bulletin_board.exception.SQLRuntimeException;
 
 public class UserPostsDao {
 
-	public List<UserPosts> getUserPosts(Connection connection, int num) {
+	public List<UserPosts> getUserPosts(Connection connection, int num,String startDate,String endDate) {
 
 		PreparedStatement ps = null;
 		try {
@@ -26,15 +26,20 @@ public class UserPostsDao {
 			sql.append("posts.created_at AS created_at, ");
 			sql.append("users.name AS name, ");
 			sql.append("posts.user_id AS user_id, ");
+			sql.append("posts.id AS id, ");
 			sql.append("branches.name as branch_name , ");
 			sql.append("departments.name as department_name  ");
 			sql.append("from (posts join users , branches ,  departments) ");
 			sql.append("where (users.id = posts.user_id) ");
 			sql.append("and users.branch_id = branches.id ");
 			sql.append("and users.department_id = departments.id ");
+			sql.append("and ? <= created_at ");
+			sql.append("and ? >= created_at ");
 			sql.append("ORDER BY created_at DESC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
+			ps.setString(1, startDate);
+			ps.setString(2, endDate);
 
 			ResultSet rs = ps.executeQuery();
 			List<UserPosts> ret = toUserPostsList(rs);
@@ -59,6 +64,7 @@ public class UserPostsDao {
 				String branchName = rs.getString("branch_name");
 				String departmentName = rs.getString("department_name");
 				int userId = rs.getInt("user_id");
+				int postId = rs.getInt("id");
 				java.sql.Timestamp createdAt = rs.getTimestamp("created_at");
 
 				UserPosts post = new UserPosts();
@@ -69,6 +75,7 @@ public class UserPostsDao {
 				post.setBranchName(branchName);
 				post.setDepartmentName(departmentName);
 				post.setUserId(userId);
+				post.setId(postId);
 				post.setCreatedAt(createdAt);
 
 				ret.add(post);

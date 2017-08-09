@@ -15,11 +15,9 @@
 
 		<div class="header">
 			<c:if test="${not empty loginUser }">
-				<a href="./">ホーム</a>
-				<a href="settings">設定</a>
 				<a href="posts">新規投稿</a>
-				<a href="logout">ログアウト</a>
 				<a href="userManagement">ユーザー管理</a>
+				<a href="logout">ログアウト</a>
 			</c:if>
 		</div>
 
@@ -33,21 +31,56 @@
 			</div>
 		</c:if>
 <h3>みんなの投稿</h3>
-
+<form action="./">
+	<h4>絞込み</h4>
+	<input name=startDate />ここから<br />
+	<input name=endDate />ここまで<br />
+	<input type="submit" value="検索" /><br />
+</form>
+<br/>
 <div class="messages">
-	<c:forEach items="${Posts}" var="post">
+	<c:forEach items="${posts}" var="post">
 		<div class="message">
 			<div class="account-name">
-				<span class="name"><c:out value="${post.name }"/></span>さんの投稿<br/>
+				<h3><span class="name"><c:out value="${post.name }"/></span>さんの投稿<br/></h3>
 				件名：<span class="subject"><c:out value="${post.subject }"/></span><br/>
 				カテゴリー：<span class="category"><c:out value="${post.category }"/></span><br/>
 			</div>
-			投稿文：<div class="text"><c:out value="${post.text }"/></div><br/>
+			投稿文<div class="text"><c:out value="${post.text }"/></div><br/>
 			<div class="date"><fmt:formatDate value="${post.createdAt }"
 			pattern="yyyy/MM/dd HH:mm:ss"/><br/>
 				所属：<span class="branchId"><c:out value="${post.branchName }"/></span> /
 				部署・役職：<span class="departmentId"><c:out value="${post.departmentName }"/></span><br/>
 			<br/>
+			</div>
+			<div class="form-area">
+				<form action="comment" method="post">
+					<input name="postId" type="hidden" id="postId" value ="${post.id}"><br />
+					コメント<br/>
+					<textarea name="text" rows="5" cols="100" class="tweet-box"></textarea>
+					<br/>
+					<input type="submit" value="コメント">(500文字まで)
+				</form>
+				<br/>
+					<div class="comment">
+						<c:forEach items="${comments}" var="comment">
+							<c:if test = "${post.id == comment.postId}">
+							<div class="comment">
+							<div class="account-name">
+							<span class="name"><c:out value="${comment.name }"/></span>さんのコメント<br/>
+							<span class="text"><c:out value="${comment.text }"/></span><br/>
+							<div class="date"><fmt:formatDate value="${comment.createdAt }"
+								pattern="yyyy/MM/dd HH:mm:ss"/><br/></div>
+							所属：<span class="branchName"><c:out value="${comment.branchName }"/></span>/
+							部署・役職：<span class="departmentName"><c:out value="${comment.departmentName }"/>
+							</span><br/>
+							</div>
+							<br/>
+							------------------------------------------------------------------------------
+							</div>
+							</c:if>
+						</c:forEach>
+					</div>
 			</div>
 		</div>
 	</c:forEach>

@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>${loginUser.account}の設定</title>
+	<title>${loginUser.loginId}の設定</title>
 	<link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -26,7 +26,7 @@
 <form action="settings" method="post" enctype="multipart/form-data"><br />
 
 	<label for="login_id">ログインID</label>
-	<input name="login_id" value="${editUser.login_id}" /><br />
+	<input name="login_id" value="${editUser.loginId}" /><br />
 
 	<label for="password">パスワード</label>
 	<input name="password" type="password" id="password"/> <br />
@@ -35,13 +35,13 @@
 	<input name="name" value="${editUser.name}" id="name"/> <br />
 
 	<label for="branch_id">支店名</label>
-	<input name="branch_id" value="${editUser.branch_id}" id="branch_id"/> <br />
+	<input name="branch_id" value="${editUser.branchId}" id="branch_id"/> <br />
 
 	<label for="department_id">部署.役職</label>
-	<input name="department_id" value="${editUser.department_id}" id="department_id"/> <br />
+	<input name="department_id" value="${editUser.departmentId}" id="department_id"/> <br />
 
 	<input type="submit" value="登録" /> <br />
-	<a href="./">戻る</a>
+	<a href="userManagement">戻る</a>
 
 </form>
 <div class="copyright">Copyright(c)Satoshi Kimura</div>

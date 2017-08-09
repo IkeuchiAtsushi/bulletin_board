@@ -1,6 +1,9 @@
 package bulletin_board.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+//import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bulletin_board.beans.User;
+import bulletin_board.beans.UserComment;
 import bulletin_board.beans.UserPosts;
+import bulletin_board.service.CommentService;
 import bulletin_board.service.PostsService;
 import bulletin_board.service.UserService;
 
@@ -22,12 +27,23 @@ public class HomeServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response)throws IOException,ServletException{
 
-		List<UserPosts>posts = new PostsService().getPosts();
+		Date date = new Date();
 
-		request.setAttribute("Posts", posts);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String startDate = "2017/08/01";
+		String endDate = sdf.format(date.getTime());
+
+		List<UserPosts>posts = new PostsService().getPosts(startDate,endDate);
+
+		request.setAttribute("posts", posts);
 
 		List<User> users = new UserService().getUsers();
+
 		request.setAttribute("users", users);
+
+		List<UserComment> comments = new CommentService().getComment();
+
+		request.setAttribute("comments", comments);
 
 		request.getRequestDispatcher("/home.jsp").forward(request, response);
 	}

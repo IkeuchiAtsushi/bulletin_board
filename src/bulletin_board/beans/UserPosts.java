@@ -14,6 +14,13 @@ public class UserPosts implements Serializable {
 	private String departmentName;
 	private Date createdAt;
 	private int userId;
+	private int postId;
+	public int getPostId() {
+		return postId;
+	}
+	public void setPostId(int postId) {
+		this.postId = postId;
+	}
 	private String name;
 
 

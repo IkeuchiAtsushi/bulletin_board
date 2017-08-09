@@ -16,7 +16,7 @@ public class PostsDao {
 		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO posts ( ");;
+			sql.append("INSERT INTO posts ( ");
 			sql.append("subject");
 			sql.append(", text");
 			sql.append(", category");

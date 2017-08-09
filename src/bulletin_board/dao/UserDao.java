@@ -15,8 +15,7 @@ import bulletin_board.exception.SQLRuntimeException;
 
 public class UserDao {
 
-	public User getUser(Connection connection, String loginId,
-			String password) {
+	public User getUser(Connection connection, String loginId,String password) {
 
 		PreparedStatement ps = null;
 		try {
@@ -116,7 +115,6 @@ public class UserDao {
 			sql.append(", department_id = ?");
 			sql.append(" WHERE");
 			sql.append(" id = ?");
-			sql.append(" AND");
 
 			ps = connection.prepareStatement(sql.toString());
 
@@ -201,6 +199,7 @@ public class UserDao {
 				String name = rs.getString("name");
 				int branchId = rs.getInt("branch_id");
 				int departmentId = rs.getInt("department_id");
+				int isWorking = rs.getInt("is_working");
 
 				String departmentName = rs.getString("department_name");
 				String branchName = rs.getString("branch_name");
@@ -212,6 +211,7 @@ public class UserDao {
 				user.setName(name);
 				user.setBranchId(branchId);
 				user.setDepartmentId(departmentId);
+				user.setIsWorking(isWorking);
 
 				user.setBranchName(branchName);
 				user.setDepartmentName(departmentName);
@@ -221,6 +221,33 @@ public class UserDao {
 			return ret;
 		} finally {
 			close(rs);
+		}
+	}
+	public void isWorking(Connection connection,int id, int isWorking) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE users SET");
+			sql.append(" is_working = ?");
+			sql.append(" WHERE");
+			sql.append(" id = ?");
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ps.setInt(1, isWorking);
+			ps.setInt(2, id);
+
+			System.out.println(ps.toString());
+
+			int count = ps.executeUpdate();
+			if (count == 0) {
+				throw new NoRowsUpdatedRuntimeException();
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
 		}
 	}
 }

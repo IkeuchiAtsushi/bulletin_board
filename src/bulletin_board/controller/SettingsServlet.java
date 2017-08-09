@@ -28,14 +28,10 @@ public class SettingsServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		User loginUser = (User) session.getAttribute("loginUser");
-
-		if (session.getAttribute("editUser") == null) {
-			User editUser = new UserService().getUser(loginUser.getId());
+			User editUser = new UserService().getUser(Integer.parseInt(request.getParameter("id")));
 			session.setAttribute("editUser", editUser);
-		}
 
-		request.getRequestDispatcher("settings.jsp").forward(request, response);
+		request.getRequestDispatcher("/settings.jsp").forward(request, response);
 	}
 
 	@Override
@@ -60,7 +56,7 @@ public class SettingsServlet extends HttpServlet {
 				response.sendRedirect("settings");
 			}
 
-			session.setAttribute("loginUser", editUser);
+			session.setAttribute("editUser", editUser);
 			session.removeAttribute("editUser");
 
 			response.sendRedirect("./");
@@ -76,16 +72,16 @@ public class SettingsServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User editUser = (User) session.getAttribute("editUser");
 
-		editUser.setLoginId(request.getParameter("login_id"));
+		editUser.setLoginId(request.getParameter("loginId"));
 		editUser.setPassword(request.getParameter("password"));
 		editUser.setName(request.getParameter("name"));
-		editUser.setBranchId(Integer.parseInt(request.getParameter("branch_id")));
-		editUser.setDepartmentId(Integer.parseInt(request.getParameter("department_id")));
+		editUser.setBranchId(Integer.parseInt(request.getParameter("branchId")));
+		editUser.setDepartmentId(Integer.parseInt(request.getParameter("departmentId")));
 		return editUser;
 	}
 	private boolean isValid(HttpServletRequest request, List<String> messages) {
 
-		String loginId = request.getParameter("login_id");
+		String loginId = request.getParameter("loginId");
 		String password = request.getParameter("password");
 
 		if (StringUtils.isEmpty(loginId) == true) {
