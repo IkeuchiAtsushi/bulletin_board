@@ -19,7 +19,7 @@ public class UserDao {
 
 		PreparedStatement ps = null;
 		try {
-			String sql = "SELECT * FROM users WHERE login_id = ? AND password = ?";
+			String sql = "SELECT * FROM users WHERE login_id = ? AND password = ? AND is_working = 1";
 
 			ps = connection.prepareStatement(sql);
 			ps.setString(1, loginId);
@@ -237,8 +237,6 @@ public class UserDao {
 
 			ps.setInt(1, isWorking);
 			ps.setInt(2, id);
-
-			System.out.println(ps.toString());
 
 			int count = ps.executeUpdate();
 			if (count == 0) {

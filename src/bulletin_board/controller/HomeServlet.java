@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+
 import bulletin_board.beans.User;
 import bulletin_board.beans.UserComment;
 import bulletin_board.beans.UserPosts;
@@ -30,10 +32,21 @@ public class HomeServlet extends HttpServlet{
 		Date date = new Date();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		String startDate = "2017/08/01";
-		String endDate = sdf.format(date.getTime());
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String category = request.getParameter("category");
 
-		List<UserPosts>posts = new PostsService().getPosts(startDate,endDate);
+		if (StringUtils.isNotBlank(startDate) == true) {
+			startDate = "2017/08/01 00:00:00";
+		}
+		if (StringUtils.isNotBlank(endDate) == true) {
+			endDate = sdf.format(date.getTime());
+		}
+		if (StringUtils.isNotBlank(category) == true) {
+			response.sendRedirect("./");
+		}
+
+		List<UserPosts>posts = new PostsService().getPosts(startDate,endDate,category);
 
 		request.setAttribute("posts", posts);
 

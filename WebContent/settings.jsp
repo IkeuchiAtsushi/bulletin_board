@@ -26,7 +26,7 @@
 <form action="settings" method="post" enctype="multipart/form-data"><br />
 
 	<label for="login_id">ログインID</label>
-	<input name="login_id" value="${editUser.loginId}" /><br />
+	<input name="loginId" value="${editUser.loginId}" /><br />
 
 	<label for="password">パスワード</label>
 	<input name="password" type="password" id="password"/> <br />
@@ -35,10 +35,10 @@
 	<input name="name" value="${editUser.name}" id="name"/> <br />
 
 	<label for="branch_id">支店名</label>
-	<input name="branch_id" value="${editUser.branchId}" id="branch_id"/> <br />
+	<input name="branchId" value="${editUser.branchId}" id="branch_id"/> <br />
 
 	<label for="department_id">部署.役職</label>
-	<input name="department_id" value="${editUser.departmentId}" id="department_id"/> <br />
+	<input name="departmentId" value="${editUser.departmentId}" id="department_id"/> <br />
 
 	<input type="submit" value="登録" /> <br />
 	<a href="userManagement">戻る</a>

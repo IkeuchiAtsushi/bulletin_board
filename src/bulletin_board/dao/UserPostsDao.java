@@ -10,11 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bulletin_board.beans.UserPosts;
+import bulletin_board.exception.NoRowsUpdatedRuntimeException;
 import bulletin_board.exception.SQLRuntimeException;
 
 public class UserPostsDao {
 
-	public List<UserPosts> getUserPosts(Connection connection, int num,String startDate,String endDate) {
+	public List<UserPosts> getUserPosts(Connection connection, int num,
+			String startDate,String endDate,String category) {
 
 		PreparedStatement ps = null;
 		try {
@@ -35,11 +37,20 @@ public class UserPostsDao {
 			sql.append("and users.department_id = departments.id ");
 			sql.append("and ? <= created_at ");
 			sql.append("and ? >= created_at ");
+
+
+			sql.append("and category = ? ");
+
+
+
 			sql.append("ORDER BY created_at DESC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
-			ps.setString(1, startDate);
-			ps.setString(2, endDate);
+			ps.setString(1, startDate + " 23:59:59");
+			ps.setString(2, endDate + " 23:59:59");
+			ps.setString(3, category);
+
+			System.out.println(ps.toString());
 
 			ResultSet rs = ps.executeQuery();
 			List<UserPosts> ret = toUserPostsList(rs);
@@ -85,5 +96,27 @@ public class UserPostsDao {
 			close(rs);
 		}
 	}
+	public void postsDelete(Connection connection,int id) {
 
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("DELETE FROM posts ");
+			sql.append(" WHERE");
+			sql.append(" id = ?");
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ps.setInt(1, id);
+
+			int count = ps.executeUpdate();
+			if (count == 0) {
+				throw new NoRowsUpdatedRuntimeException();
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
 }

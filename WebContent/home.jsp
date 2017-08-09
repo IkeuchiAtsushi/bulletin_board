@@ -3,7 +3,7 @@
 <%@page isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <link href="./css/style.css" rel="stylesheet" type="text/css">
@@ -24,17 +24,23 @@
 		<c:if test="${not empty loginUser}">
 			<div class="profile">
 				<div class="name">
+
 					<h1>
-						<c:out value="ようこそ${loginUser.name}さん！" /><br/>
+						<c:out value="掲示板" /><br/>
 					</h1>
+						<br/>
+					<h2>
+						<c:out value="ようこそ${loginUser.name}さん！" /><br/>
+					</h2>
 				</div>
 			</div>
 		</c:if>
 <h3>みんなの投稿</h3>
 <form action="./">
-	<h4>絞込み</h4>
-	<input name=startDate />ここから<br />
-	<input name=endDate />ここまで<br />
+	<h4>検索</h4>
+	カテゴリー<input name=category />の<br />
+	<input type="date" name=startDate />から<br />
+	<input type="date" name=endDate />まで<br />
 	<input type="submit" value="検索" /><br />
 </form>
 <br/>
@@ -52,6 +58,9 @@
 				所属：<span class="branchId"><c:out value="${post.branchName }"/></span> /
 				部署・役職：<span class="departmentId"><c:out value="${post.departmentName }"/></span><br/>
 			<br/>
+				<form action="postsDelete" method="post">
+					<button type="submit" name="id" value="${post.id }">削除</button>
+				</form>
 			</div>
 			<div class="form-area">
 				<form action="comment" method="post">
@@ -76,6 +85,9 @@
 							</span><br/>
 							</div>
 							<br/>
+								<form action="commentDelete" method="post">
+									<button type="submit" name="id" value="${comment.id }">削除</button>
+								</form>
 							------------------------------------------------------------------------------
 							</div>
 							</c:if>

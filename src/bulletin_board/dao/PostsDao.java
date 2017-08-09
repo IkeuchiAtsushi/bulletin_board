@@ -50,5 +50,4 @@ public class PostsDao {
 			close(ps);
 		}
 	}
-
 }

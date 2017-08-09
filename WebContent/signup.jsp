@@ -38,7 +38,7 @@
 	<input name="department_id" id="department_id"/> <br />
 
 	<input type="submit" value="登録" /> <br />
-	<a href="./">戻る</a>
+	<a href="userManagement">戻る</a>
 </form>
 <div class="copyright">Copyright(c)Atsushi Ikeuchi</div>
 </div>
