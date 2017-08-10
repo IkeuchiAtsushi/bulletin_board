@@ -15,6 +15,7 @@
 
 		<div class="header">
 			<c:if test="${not empty loginUser }">
+				<a href="./">ホーム</a>
 				<a href="posts">新規投稿</a>
 				<a href="userManagement">ユーザー管理</a>
 				<a href="logout">ログアウト</a>

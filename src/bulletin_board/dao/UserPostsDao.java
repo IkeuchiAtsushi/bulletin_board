@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import bulletin_board.beans.UserPosts;
 import bulletin_board.exception.NoRowsUpdatedRuntimeException;
 import bulletin_board.exception.SQLRuntimeException;
@@ -38,19 +40,18 @@ public class UserPostsDao {
 			sql.append("and ? <= created_at ");
 			sql.append("and ? >= created_at ");
 
-
-			sql.append("and category = ? ");
-
-
-
+			if (StringUtils.isNotBlank(category) == true) {
+				sql.append("and category = ? ");
+			}
 			sql.append("ORDER BY created_at DESC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
-			ps.setString(1, startDate + " 23:59:59");
+			ps.setString(1, startDate + " 00:00:00");
 			ps.setString(2, endDate + " 23:59:59");
-			ps.setString(3, category);
 
-			System.out.println(ps.toString());
+			if (StringUtils.isNotBlank(category) == true) {
+			ps.setString(3, category);
+			}
 
 			ResultSet rs = ps.executeQuery();
 			List<UserPosts> ret = toUserPostsList(rs);

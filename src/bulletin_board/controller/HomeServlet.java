@@ -32,18 +32,18 @@ public class HomeServlet extends HttpServlet{
 		Date date = new Date();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		String startDate = request.getParameter("startDate");
-		String endDate = request.getParameter("endDate");
-		String category = request.getParameter("category");
+		String startDate = "2017/08/01 00:00:00";
+		String endDate = sdf.format(date.getTime());
+		String category = " ";
 
-		if (StringUtils.isNotBlank(startDate) == true) {
-			startDate = "2017/08/01 00:00:00";
+		if (StringUtils.isNotBlank(request.getParameter("startDate")) == true) {
+			startDate = request.getParameter("startDate");
 		}
-		if (StringUtils.isNotBlank(endDate) == true) {
-			endDate = sdf.format(date.getTime());
+		if (StringUtils.isNotBlank(request.getParameter("endDate")) == true) {
+			endDate = request.getParameter("endDate");
 		}
-		if (StringUtils.isNotBlank(category) == true) {
-			response.sendRedirect("./");
+		if (StringUtils.isNotBlank(request.getParameter("category")) == true) {
+			category = request.getParameter("category");
 		}
 
 		List<UserPosts>posts = new PostsService().getPosts(startDate,endDate,category);

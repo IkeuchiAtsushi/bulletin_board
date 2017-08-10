@@ -15,6 +15,8 @@ public class UserPosts implements Serializable {
 	private Date createdAt;
 	private int userId;
 	private int postId;
+
+
 	public int getPostId() {
 		return postId;
 	}
@@ -78,6 +80,4 @@ public class UserPosts implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
 }
