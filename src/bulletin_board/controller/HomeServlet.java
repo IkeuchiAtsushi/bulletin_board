@@ -46,6 +46,10 @@ public class HomeServlet extends HttpServlet{
 			category = request.getParameter("category");
 		}
 
+		List<UserPosts>categories = new PostsService().getCategory();
+
+		request.setAttribute("categories", categories);
+
 		List<UserPosts>posts = new PostsService().getPosts(startDate,endDate,category);
 
 		request.setAttribute("posts", posts);

@@ -39,7 +39,13 @@
 <h3>みんなの投稿</h3>
 <form action="./">
 	<h4>検索</h4>
-	カテゴリー<input name=category />の<br />
+	<select name=category>
+		<option value="">カテゴリー</option>
+			<c:forEach items="${categories }" var="category">
+				<option value="${category.category }">${category.category }</option>
+			</c:forEach>
+	</select>
+	<br/>
 	<input type="date" name=startDate />から<br />
 	<input type="date" name=endDate />まで<br />
 	<input type="submit" value="検索" /><br />

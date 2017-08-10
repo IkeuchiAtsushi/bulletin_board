@@ -120,4 +120,41 @@ public class UserPostsDao {
 			close(ps);
 		}
 	}
+	public List<UserPosts> getCategory(Connection connection) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select distinct category ");
+			sql.append("from posts ");
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ResultSet rs = ps.executeQuery();
+			List<UserPosts> ret = toCategoryList(rs);
+			return ret;
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+	private List<UserPosts> toCategoryList(ResultSet rs)
+			throws SQLException {
+
+		List<UserPosts> ret = new ArrayList<UserPosts>();
+		try {
+			while (rs.next()) {
+				String category = rs.getString("category");
+
+				UserPosts post = new UserPosts();
+				post.setCategory(category);
+
+				ret.add(post);
+			}
+			return ret;
+		} finally {
+			close(rs);
+		}
+	}
 }
