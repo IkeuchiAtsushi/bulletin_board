@@ -11,12 +11,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
 import bulletin_board.beans.User;
 import bulletin_board.beans.UserComment;
-import bulletin_board.beans.UserPosts;
+import bulletin_board.beans.UserPost;
 import bulletin_board.service.CommentService;
 import bulletin_board.service.PostsService;
 import bulletin_board.service.UserService;
@@ -29,6 +30,11 @@ public class HomeServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response)throws IOException,ServletException{
 
+		HttpSession session = request.getSession();
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		request.setAttribute("loginUser", loginUser);
+
 		Date date = new Date();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -38,19 +44,26 @@ public class HomeServlet extends HttpServlet{
 
 		if (StringUtils.isNotBlank(request.getParameter("startDate")) == true) {
 			startDate = request.getParameter("startDate");
+
+			request.setAttribute("startDate", startDate);
 		}
 		if (StringUtils.isNotBlank(request.getParameter("endDate")) == true) {
 			endDate = request.getParameter("endDate");
+
+			request.setAttribute("endDate", endDate);
 		}
 		if (StringUtils.isNotBlank(request.getParameter("category")) == true) {
 			category = request.getParameter("category");
+
+			request.setAttribute("selectCategory", category);
 		}
 
-		List<UserPosts>categories = new PostsService().getCategory();
+		List<UserPost>categories = new PostsService().getCategory();
 
-		request.setAttribute("categories", categories);
+		session.setAttribute("categories", categories);
 
-		List<UserPosts>posts = new PostsService().getPosts(startDate,endDate,category);
+
+		List<UserPost>posts = new PostsService().getPosts(startDate,endDate,category);
 
 		request.setAttribute("posts", posts);
 

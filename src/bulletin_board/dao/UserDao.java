@@ -52,6 +52,7 @@ public class UserDao {
 				String name = rs.getString("name");
 				int branchId = rs.getInt("branch_id");
 				int departmentId = rs.getInt("department_id");
+				int isWorking = rs.getInt("is_working");
 
 				User user = new User();
 				user.setId(id);
@@ -60,7 +61,7 @@ public class UserDao {
 				user.setName(name);
 				user.setBranchId(branchId);
 				user.setDepartmentId(departmentId);
-
+				user.setIsWorking(isWorking);
 				ret.add(user);
 			}
 			return ret;
@@ -109,22 +110,27 @@ public class UserDao {
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE users SET");
 			sql.append(" login_id = ?");
-			sql.append(", password = ?");
 			sql.append(",  name = ?");
 			sql.append(", branch_id = ?");
 			sql.append(", department_id = ?");
+			if (!user.getPassword().isEmpty()) {
+				sql.append(", password = ?");
+			}
 			sql.append(" WHERE");
 			sql.append(" id = ?");
 
 			ps = connection.prepareStatement(sql.toString());
 
 			ps.setString(1, user.getLoginId());
-			ps.setString(2, user.getPassword());
-			ps.setString(3, user.getName());
-			ps.setInt(4, user.getBranchId());
-			ps.setInt(5, user.getDepartmentId());
-			ps.setInt(6, user.getId());
-
+			ps.setString(2, user.getName());
+			ps.setInt(3, user.getBranchId());
+			ps.setInt(4, user.getDepartmentId());
+			if(!user.getPassword().isEmpty()){
+				ps.setString(5, user.getPassword());
+				ps.setInt(6, user.getId());
+			}else{
+				ps.setInt(5, user.getId());
+			}
 
 			int count = ps.executeUpdate();
 			if (count == 0) {
@@ -170,7 +176,8 @@ public class UserDao {
 			String sql = "select users.*,branches.name as branch_name ,"
 					+ "departments.name as department_name "
 					+ "from(users join branches , departments)  "
-					+ "where users.branch_id = branches.id and users.department_id = departments.id;";
+					+ "where users.branch_id = branches.id and users.department_id = departments.id "
+					+ "order by branch_id asc, department_id asc, users.login_id asc";
 
 			ps = connection.prepareStatement(sql);
 
@@ -241,6 +248,30 @@ public class UserDao {
 			int count = ps.executeUpdate();
 			if (count == 0) {
 				throw new NoRowsUpdatedRuntimeException();
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+	public User getUser(Connection connection, String loginId) {
+
+		PreparedStatement ps = null;
+		try {
+			String sql = "SELECT * FROM users WHERE login_id = ?" ;
+
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, loginId);
+
+			ResultSet rs = ps.executeQuery();
+			List<User> userList = toUserList(rs);
+			if (userList.isEmpty() == true) {
+				return null;
+			} else if (2 <= userList.size()) {
+				throw new IllegalStateException("2 <= userList.size()");
+			} else {
+				return userList.get(0);
 			}
 		} catch (SQLException e) {
 			throw new SQLRuntimeException(e);

@@ -11,13 +11,13 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import bulletin_board.beans.UserPosts;
+import bulletin_board.beans.UserPost;
 import bulletin_board.exception.NoRowsUpdatedRuntimeException;
 import bulletin_board.exception.SQLRuntimeException;
 
 public class UserPostsDao {
 
-	public List<UserPosts> getUserPosts(Connection connection, int num,
+	public List<UserPost> getUserPosts(Connection connection, int num,
 			String startDate,String endDate,String category) {
 
 		PreparedStatement ps = null;
@@ -32,7 +32,9 @@ public class UserPostsDao {
 			sql.append("posts.user_id AS user_id, ");
 			sql.append("posts.id AS id, ");
 			sql.append("branches.name as branch_name , ");
-			sql.append("departments.name as department_name  ");
+			sql.append("departments.name as department_name, ");
+			sql.append("posts.branch_id AS branch_id, ");
+			sql.append("posts.department_id as department_id ");
 			sql.append("from (posts join users , branches ,  departments) ");
 			sql.append("where (users.id = posts.user_id) ");
 			sql.append("and users.branch_id = branches.id ");
@@ -54,7 +56,7 @@ public class UserPostsDao {
 			}
 
 			ResultSet rs = ps.executeQuery();
-			List<UserPosts> ret = toUserPostsList(rs);
+			List<UserPost> ret = toUserPostsList(rs);
 			return ret;
 		} catch (SQLException e) {
 			throw new SQLRuntimeException(e);
@@ -63,10 +65,10 @@ public class UserPostsDao {
 		}
 	}
 
-	private List<UserPosts> toUserPostsList(ResultSet rs)
+	private List<UserPost> toUserPostsList(ResultSet rs)
 			throws SQLException {
 
-		List<UserPosts> ret = new ArrayList<UserPosts>();
+		List<UserPost> ret = new ArrayList<UserPost>();
 		try {
 			while (rs.next()) {
 				String subject = rs.getString("subject");
@@ -75,17 +77,21 @@ public class UserPostsDao {
 				String name = rs.getString("name");
 				String branchName = rs.getString("branch_name");
 				String departmentName = rs.getString("department_name");
+				int branchId = rs.getInt("branch_id");
+				int departmentId = rs.getInt("department_id");
 				int userId = rs.getInt("user_id");
 				int postId = rs.getInt("id");
 				java.sql.Timestamp createdAt = rs.getTimestamp("created_at");
 
-				UserPosts post = new UserPosts();
+				UserPost post = new UserPost();
 				post.setSubject(subject);
 				post.setCategory(category);
 				post.setText(text);
 				post.setName(name);
 				post.setBranchName(branchName);
 				post.setDepartmentName(departmentName);
+				post.setBranchId(branchId);
+				post.setDepartmentId(departmentId);
 				post.setUserId(userId);
 				post.setId(postId);
 				post.setCreatedAt(createdAt);
@@ -120,7 +126,7 @@ public class UserPostsDao {
 			close(ps);
 		}
 	}
-	public List<UserPosts> getCategory(Connection connection) {
+	public List<UserPost> getCategory(Connection connection) {
 
 		PreparedStatement ps = null;
 		try {
@@ -131,7 +137,7 @@ public class UserPostsDao {
 			ps = connection.prepareStatement(sql.toString());
 
 			ResultSet rs = ps.executeQuery();
-			List<UserPosts> ret = toCategoryList(rs);
+			List<UserPost> ret = toCategoryList(rs);
 			return ret;
 		} catch (SQLException e) {
 			throw new SQLRuntimeException(e);
@@ -139,15 +145,15 @@ public class UserPostsDao {
 			close(ps);
 		}
 	}
-	private List<UserPosts> toCategoryList(ResultSet rs)
+	private List<UserPost> toCategoryList(ResultSet rs)
 			throws SQLException {
 
-		List<UserPosts> ret = new ArrayList<UserPosts>();
+		List<UserPost> ret = new ArrayList<UserPost>();
 		try {
 			while (rs.next()) {
 				String category = rs.getString("category");
 
-				UserPosts post = new UserPosts();
+				UserPost post = new UserPost();
 				post.setCategory(category);
 
 				ret.add(post);

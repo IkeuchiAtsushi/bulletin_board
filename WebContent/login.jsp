@@ -5,7 +5,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link href="./css/style.css"rel="stylesheet"type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ログイン</title>
 </head>
@@ -23,15 +22,15 @@
 </c:if>
 
 <form action="login" method="post"><br />
-	<label for="loginId">IDを入力</label>
-	<input name="loginId" id="loginId" /> <br />
+	<label for="loginId" >ログインID</label>
+	<input name="loginId" id="loginId" value="${loginId}"/> <br />
 
 	<label for="password">パスワード</label>
 	<input name="password" type="password" id="password"/> <br />
 
 	<input type="submit" value="ログイン" /> <br />
 </form>
-<div class="copyright">Copyright(c)Atsushi Ikeuchi</div>
+	<div class="copyright">Copyright(c)Atsushi Ikeuchi</div>
 </div>
 </body>
 </html>

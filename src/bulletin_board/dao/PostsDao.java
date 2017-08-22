@@ -6,12 +6,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import bulletin_board.beans.Posts;
+import bulletin_board.beans.Post;
 import bulletin_board.exception.SQLRuntimeException;
 
 public class PostsDao {
 
-	public void insert(Connection connection, Posts posts) {
+	public void insert(Connection connection, Post posts) {
 
 		PreparedStatement ps = null;
 		try {
