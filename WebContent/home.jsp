@@ -35,63 +35,57 @@ function CountDownLength( idn, str, mnum ) {
 </script>
 </head>
 <body>
-<div class="main-contents">
-	<div class="header">
-		<c:if test="${not empty loginUser }">
-			<a href="posts">新規投稿</a>
-				<c:if test="${loginUser.departmentId == 1 }">
-					<a href="userManagement">ユーザー管理</a>
-				</c:if>
-			<a href="logout" onclick="return confirm('ログアウトします')">ログアウト </a>
-		</c:if>
-	</div>
-		<c:if test="${not empty loginUser}">
-			<div class="profile">
-				<div class="name"><br/>
-					<h1>社内掲示板</h1>
+<h1>社内掲示板</h1>
+	<div class="main-contents">
+		<div class="profile">
+			<div class="name"><br/>
+					<a href="posts">新規投稿</a>
+						<c:if test="${loginUser.departmentId == 1 }">
+							<a href="userManagement">ユーザー管理</a>
+						</c:if>
+						<a href="logout" onclick="return confirm('ログアウトします')" style="float: right;">ログアウト </a>
+
 					<h2><c:out value="ようこそ${loginUser.name}さん！" /><br/></h2>
-				</div>
 			</div>
-		</c:if>
-		<c:if test="${ not empty errorMessages }">
-			<div class="errorMessages">
-				<ul>
-					<c:forEach items="${errorMessages}" var="message">
-						<li><c:out value="${message}" />
-					</c:forEach>
-				</ul>
-			</div>
-			<c:remove var="errorMessages" scope="session"/>
-		</c:if>
-	<h3>みんなの投稿</h3>
+		</div>
+	<c:if test="${ not empty errorMessages }">
+		<div class="errorMessages">
+			<ul>
+				<c:forEach items="${errorMessages}" var="message">
+					<br/><c:out value="${message}" />
+				</c:forEach>
+			</ul>
+		</div>
+		<c:remove var="errorMessages" scope="session"/>
+	</c:if>
+	<br/>
+	<h3>検索</h3>
 		<form action="./">
-			<h4>カテゴリーで検索</h4>
-				<select name=category size="1">
+			<h4>カテゴリーを指定</h4>
+				<select name=category>
 					<option value="">全て表示</option>
 					<c:forEach items="${categories }" var="category">
 						<option value="${category.category}" <c:if test="${category.category==selectCategory }">
 								selected</c:if>>${category.category}</option>
 					</c:forEach>
-				</select>
-				<br/>
-			<h4>日にちで検索</h4>
+				</select><br/>
+			<h4>日にちを指定</h4>
 			<input type="date" name=startDate value="${startDate}"/>から<br />
 			<input type="date" name=endDate value="${endDate}"/>まで<br />
-			<input type="submit" value="検索" /><br />
+			<input class="square_btn" type="submit" value="検索" /><br />
 		</form>
 		<br/>
 	<div class="messages">
 		<c:forEach items="${posts}" var="post">
 			<div class="message">
 				<div class="account-name">
-					<h3><span class="name"><c:out value="${post.name }"/></span>さんの投稿<br/></h3>
-					件名：<span class="subject"><c:out value="${post.subject }"/></span><br/>
-					カテゴリー：<span class="category"><c:out value="${post.category }"/></span><br/>
+					<h3><span class="name"><c:out value="${post.name }"/></span>さんの投稿
+					| 件名：<span class="subject"><c:out value="${post.subject }"/></span>
+					| カテゴリー：<span class="category"><c:out value="${post.category }"/></span></h3>
 				</div>
-				投稿文
 				<c:forEach var="text" items="${fn:split(post.text, '
 							')}">
-    					<div><c:out value="${text}"/></div>
+    					<div><p class="w-break"><c:out value="${text}"/><p></div>
 				</c:forEach>
 				<br/>
 				<div class="date"><fmt:formatDate value="${post.createdAt }"
@@ -102,7 +96,7 @@ function CountDownLength( idn, str, mnum ) {
 				<c:if test = "${loginUser.departmentId==2 || loginUser.id == post.userId ||
 										 loginUser.branchId == post.branchId && loginUser.departmentId == 3 }">
 					<form action="postsDelete" method="post"  onSubmit="return check()">
-						<button type="submit" name="id" value="${post.id }">削除</button>
+						<button class="square_btn1" type="submit" name="id" value="${post.id }">削除</button>
 					</form>
 				</c:if>
 			</div>
@@ -116,7 +110,7 @@ function CountDownLength( idn, str, mnum ) {
 						<p id=${post.id } ></p>
 
 					<br/>
-					<input type="submit" value="コメント">
+					<input class="square_btn" type="submit" value="コメント">
 				</form>
 				<br/>
 					<div class="comment">
@@ -124,10 +118,11 @@ function CountDownLength( idn, str, mnum ) {
 							<c:if test = "${post.id == comment.postId}">
 							<div class="comment">
 							<div class="account-name">
-							<span class="name"><c:out value="${comment.name }"/></span>さんのコメント<br/>
+							<comment><span class="name"><c:out value="${comment.name }"/></span>さんのコメント</comment>
+							<br/><br/>
 								<c:forEach var="text" items="${fn:split(comment.text, '
-											')}">
-    								<div><c:out value="${text}"/></div>
+										')}">
+    								<div><p class="w-break"><c:out value="${text}"/></p></div>
 								</c:forEach>
 							<br/>
 							<div class="date"><fmt:formatDate value="${comment.createdAt }"
@@ -140,7 +135,7 @@ function CountDownLength( idn, str, mnum ) {
 								<c:if test = "${loginUser.departmentId==2 || loginUser.id == comment.userId ||
 										 loginUser.branchId == comment.branchId && loginUser.departmentId == 3 }">
 									<form action="commentDelete" method="post"  onSubmit="return check()">
-										<button type="submit" name="id" value="${comment.id }">削除</button>
+										<button class="square_btn1" type="submit" name="id" value="${comment.id }">削除</button>
 									</form>
 								</c:if>
 							------------------------------------------------------------------------------
@@ -148,11 +143,10 @@ function CountDownLength( idn, str, mnum ) {
 							</c:if>
 						</c:forEach>
 					</div>
+				</div>
 			</div>
-		</div>
-	</c:forEach>
-</div>
-	<div class="copyright">Copyright(c)Atsushi Ikeuchi></div>
-</div>
+		</c:forEach>
+	</div>
+	</div>
 </body>
 </html>

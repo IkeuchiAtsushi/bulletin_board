@@ -18,12 +18,13 @@ return false; }}
 
 </head>
 <body>
+<h1>社内掲示板</h1>
 <div class="main-contents">
 <c:if test="${ not empty errorMessages }">
 	<div class="errorMessages">
 		<ul>
 			<c:forEach items="${errorMessages}" var="message">
-				<li><c:out value="${message}" />
+				<br/><c:out value="${message}" />
 			</c:forEach>
 		</ul>
 	</div>
@@ -59,10 +60,10 @@ return false; }}
 		</c:forEach>
 	</select>
 	<br/>
-	<input type="submit" value="登録" /> <br />
+	<input class="square_btn" type="submit" value="登録" /> <br />
+	<br/>
 	<a href="userManagement" >戻る</a>
 </form>
-<div class="copyright">Copyright(c)Atsushi Ikeuchi</div>
 </div>
 </body>
 </html>
